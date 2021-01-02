@@ -1,0 +1,192 @@
+import React, {Component} from 'react';
+import { Text, View, SafeAreaView,  StyleSheet,  TextInput,  TouchableOpacity,  ScrollView,} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
+export default class Login extends Component {
+  constructor(){
+    super();
+    this.state ={
+      hidePassword: true
+    }
+  }
+
+  _handleSubmit = () => {
+    alert("edildi");
+  };
+
+  render() {
+    return (
+      <SafeAreaView style={styles.body}>
+        <ScrollView>
+          <View style={styles.header}>
+            <Text style={styles.title}>Sıgn In</Text>            
+          </View>
+          <View style={styles.logo_area}>
+            <Icon name={"react"} size={200}/>
+          </View>
+          <View style={styles.board}>
+          <Formik
+            initialValues={{
+              username:'',
+              password:''
+            }}
+            onSubmit={this._handleSubmit}
+            validationSchema={Yup.object().shape({
+              username:Yup.string().required(),
+              password:Yup.string().required()
+            })}
+            
+            >
+              {({
+                values,
+                handleSubmit,
+                errors,
+                handleChange
+              }) => (
+          <View>
+            <View style={styles.item}>
+              <TextInput 
+              style={styles.ınput} 
+              placeholder="Username"
+              values={values.username}
+              onChangeText={handleChange("username")}
+              />
+              {(errors.username)&& <Text style={styles.alert}>{errors.username}</Text>}
+            </View>
+            <View style={styles.item}>
+              <TextInput
+                style={styles.ınput}
+                placeholder="Password"
+                values={values.password}
+                onChangeText={handleChange("password")}
+                secureTextEntry={this.state.hidePassword}
+              />
+              {(errors.password)&& <Text style={styles.alert}>{errors.password}</Text>}
+              <TouchableOpacity
+                style={{position: 'absolute', right: 10, top: 13}}
+                onPress={() => this.setState({hidePassword:!this.state.hidePassword})}
+                >
+                <Icon name={(this.state.hidePassword)?'eye-slash' : 'eye'} size={25} />
+              </TouchableOpacity>
+            </View>
+            <View style={[styles.item,{flexDirection: 'row', justifyContent: 'flex-end'},]}>
+              <Text
+                style={{color: '#525464', fontSize: 15, fontStyle: 'italic'}}>
+                Forgot your password?
+              </Text>
+            </View>
+            <View style={styles.item}>
+              <TouchableOpacity 
+
+              style={styles.button}
+              onPress={handleSubmit}
+              >
+                <Text style={styles.button_text}>Login</Text>
+              </TouchableOpacity>
+            </View>
+          </View>            
+            )
+            }
+            </Formik>                
+          <View style={[styles.item,{alignItems: 'center', justifyContent: 'flex-end'},]}>
+            <Text style={{color: '#525464', fontSize: 20, bottom: 20}}>Or</Text>
+          </View>
+          <View style={styles.social}>
+            <TouchableOpacity style={styles.social_item}>
+              <Icon name={'facebook-f'} color={'#3b5999'} size={40} />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.social_item}>
+              <Icon name={'twitter'} color={'#55acee'} size={40} />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.social_item}>
+              <Icon name={'linkedin'} color={'#0077B5'} size={40} />
+            </TouchableOpacity>
+          </View>
+          <View style={[styles.item, {bottom: 25}]}>
+            <TouchableOpacity
+              style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Text style={{fontSize: 16}}>
+                Don't have an account?{' '}
+                <Text style={{color: '#20C3AF', fontWeight: 'bold'}}>
+                  Sign Up{' '}
+                </Text>
+              </Text>
+            </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  body: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  header: {
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
+    color: '#525464',
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  logo_area: {
+    width: 200,
+    height: 200,
+    marginLeft: 105,
+  },
+  board: {
+    padding: 30,
+  },
+  item: {
+    marginBottom: 16,
+  },
+  ınput: {
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#B0B0C3',
+    backgroundColor: '#ecf0f1',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    height: 50,
+  },
+  button: {
+    backgroundColor: '#20C3AF',
+    paddingVertical: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+  button_text: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  social: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    bottom: 35,
+  },
+  social_item: {
+    padding: 10,
+    width: 100,
+    height: 60,
+    borderWidth: 1,
+    borderColor: '#E2E2E0',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  alert:{
+    color:'red',
+    fontSize:15
+  }
+});
